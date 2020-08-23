@@ -165,45 +165,60 @@ RandomX_ConfigurationBase::RandomX_ConfigurationBase()
 	fillAes4Rx4_Key[6] = rx_set_int_vec_i128(0xf63befa7, 0x2ba9660a, 0xf765a38b, 0xf273c9e7);
 	fillAes4Rx4_Key[7] = rx_set_int_vec_i128(0xc0b0762d, 0x0c06d1fd, 0x915839de, 0x7a7cd609);
 
-#if defined(_M_X64) || defined(__x86_64__)
+#	if defined(_M_X64) || defined(__x86_64__)
+	// Workaround for Visual Studio placing trampoline in debug builds.
+	auto addr = [](void (*func)()) {
+		const uint8_t* p = reinterpret_cast<const uint8_t*>(func);
+#		if defined(_MSC_VER)
+		if (p[0] == 0xE9) {
+			p += *(const int32_t*)(p + 1) + 5;
+		}
+#		endif
+		return p;
+	};
+
 	{
-		const uint8_t* a = (const uint8_t*)&randomx_sshash_prefetch;
-		const uint8_t* b = (const uint8_t*)&randomx_sshash_end;
+		const uint8_t* a = addr(randomx_sshash_prefetch);
+		const uint8_t* b = addr(randomx_sshash_end);
 		memcpy(codeShhPrefetchTweaked, a, b - a);
 	}
 	{
-		const uint8_t* a = (const uint8_t*)&randomx_program_read_dataset;
-		const uint8_t* b = (const uint8_t*)&randomx_program_read_dataset_ryzen;
+		const uint8_t* a = addr(randomx_program_read_dataset);
+		const uint8_t* b = addr(randomx_program_read_dataset_ryzen);
 		memcpy(codeReadDatasetTweaked, a, b - a);
 		codeReadDatasetTweakedSize = b - a;
 	}
 	{
-		const uint8_t* a = (const uint8_t*)&randomx_program_read_dataset_ryzen;
-		const uint8_t* b = (const uint8_t*)&randomx_program_read_dataset_sshash_init;
+		const uint8_t* a = addr(randomx_program_read_dataset_ryzen);
+		const uint8_t* b = addr(randomx_program_read_dataset_sshash_init);
 		memcpy(codeReadDatasetRyzenTweaked, a, b - a);
 		codeReadDatasetRyzenTweakedSize = b - a;
 	}
 	{
-		const uint8_t* a = (const uint8_t*)&randomx_program_read_dataset_sshash_init;
-		const uint8_t* b = (const uint8_t*)&randomx_program_read_dataset_sshash_fin;
+		const uint8_t* a = addr(randomx_program_read_dataset_sshash_init);
+		const uint8_t* b = addr(randomx_program_read_dataset_sshash_fin);
 		memcpy(codeReadDatasetLightSshInitTweaked, a, b - a);
 	}
 	{
-		const uint8_t* a = (const uint8_t*)&randomx_prefetch_scratchpad;
-		const uint8_t* b = (const uint8_t*)&randomx_prefetch_scratchpad_end;
+		const uint8_t* a = addr(randomx_prefetch_scratchpad);
+		const uint8_t* b = addr(randomx_prefetch_scratchpad_end);
 		memcpy(codePrefetchScratchpadTweaked, a, b - a);
 	}
-#endif
+#	endif
 }
 
 static uint32_t Log2(size_t value) { return (value > 1) ? (Log2(value / 2) + 1) : 0; }
 
 void RandomX_ConfigurationBase::Apply()
 {
-	ScratchpadL1Mask_Calculated = (ScratchpadL1_Size / sizeof(uint64_t) - 1) * 8;
-	ScratchpadL1Mask16_Calculated = (ScratchpadL1_Size / sizeof(uint64_t) / 2 - 1) * 16;
-	ScratchpadL2Mask_Calculated = (ScratchpadL2_Size / sizeof(uint64_t) - 1) * 8;
-	ScratchpadL2Mask16_Calculated = (ScratchpadL2_Size / sizeof(uint64_t) / 2 - 1) * 16;
+	const uint32_t ScratchpadL1Mask_Calculated = (ScratchpadL1_Size / sizeof(uint64_t) - 1) * 8;
+	const uint32_t ScratchpadL2Mask_Calculated = (ScratchpadL2_Size / sizeof(uint64_t) - 1) * 8;
+
+	AddressMask_Calculated[0] = ScratchpadL2Mask_Calculated;
+	AddressMask_Calculated[1] = ScratchpadL1Mask_Calculated;
+	AddressMask_Calculated[2] = ScratchpadL1Mask_Calculated;
+	AddressMask_Calculated[3] = ScratchpadL1Mask_Calculated;
+
 	ScratchpadL3Mask_Calculated = (((ScratchpadL3_Size / sizeof(uint64_t)) - 1) * 8);
 	ScratchpadL3Mask64_Calculated = ((ScratchpadL3_Size / sizeof(uint64_t)) / 8 - 1) * 64;
 
