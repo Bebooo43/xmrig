@@ -1,3 +1,36 @@
+# v6.6.0
+- Online benchmark protocol upgraded to v2, validation not compatible with previous versions.
+  - Single thread benchmark now is cheat-resistant, not possible speedup it with multiple threads.
+  - RandomX dataset is now always initialized with static seed, to prevent time cheat by report slow dataset initialization.
+  - Zero delay online submission, to make time validation much more precise and strict.
+  - DNS cache for online benchmark to prevent unexpected delays.
+
+# v6.5.3
+- [#1946](https://github.com/xmrig/xmrig/pull/1946) Fixed MSR mod names in JSON API (v6.5.2 affected).
+
+# v6.5.2
+- [#1935](https://github.com/xmrig/xmrig/pull/1935) Separate MSR mod for Zen/Zen2 and Zen3.
+- [#1937](https://github.com/xmrig/xmrig/issues/1937) Print path to existing WinRing0 service without verbose option.
+- [#1939](https://github.com/xmrig/xmrig/pull/1939) Fixed build with gcc 4.8.
+- [#1941](https://github.com/xmrig/xmrig/pull/1941) Added CPUID info to JSON report.
+- [#1941](https://github.com/xmrig/xmrig/pull/1942) Fixed alignment modification in memory pool.
+- [#1944](https://github.com/xmrig/xmrig/pull/1944) Updated `randomx_boost.sh` with new MSR mod.
+- Added `250K` and `500K` offline benchmarks.
+
+# v6.5.1
+- [#1932](https://github.com/xmrig/xmrig/pull/1932) New MSR mod for Ryzen, up to +3.5% on Zen2 and +1-2% on Zen3.
+- [#1918](https://github.com/xmrig/xmrig/issues/1918) Fixed 1GB huge pages support on ARMv8.
+- [#1926](https://github.com/xmrig/xmrig/pull/1926) Fixed compilation on ARMv8 with GCC 9.3.0.
+- [#1929](https://github.com/xmrig/xmrig/issues/1929) Fixed build without HTTP.
+
+# v6.5.0
+- **Added [online benchmark](https://xmrig.com/benchmark) mode for sharing results.**
+  - Added new command line options: `--submit`, `	--verify=ID`, `	--seed=SEED`, `--hash=HASH`.
+- [#1912](https://github.com/xmrig/xmrig/pull/1912) Fixed MSR kernel module warning with new Linux kernels.
+- [#1925](https://github.com/xmrig/xmrig/pull/1925) Add checking for config files in user home directory.
+- Added vendor to ARM CPUs name and added `"arch"` field to API.
+- Removed legacy CUDA plugin API.
+
 # v6.4.0
 - [#1862](https://github.com/xmrig/xmrig/pull/1862) **RandomX: removed `rx/loki` algorithm.**
 - [#1890](https://github.com/xmrig/xmrig/pull/1890) **Added `argon2/chukwav2` algorithm.**

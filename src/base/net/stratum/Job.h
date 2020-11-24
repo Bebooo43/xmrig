@@ -82,7 +82,7 @@ public:
     inline uint32_t backend() const                     { return m_backend; }
     inline uint64_t diff() const                        { return m_diff; }
     inline uint64_t height() const                      { return m_height; }
-    inline uint64_t nonceMask() const                   { return isNicehash() ? 0xFFFFFFULL : (nonceSize() == sizeof(uint64_t) ? (-1ull  >> (extraNonce().size() * 4)): 0xFFFFFFFFULL); }
+    inline uint64_t nonceMask() const                   { return isNicehash() ? 0xFFFFFFULL : (nonceSize() == sizeof(uint64_t) ? (-1ULL  >> (extraNonce().size() * 4)): 0xFFFFFFFFULL); }
     inline uint64_t target() const                      { return m_target; }
     inline uint8_t *blob()                              { return m_blob; }
     inline uint8_t fixedByte() const                    { return *(m_blob + 42); }
@@ -98,18 +98,18 @@ public:
     inline void setPoolWallet(const String &poolWallet) { m_poolWallet = poolWallet; }
 
 #   ifdef XMRIG_PROXY_PROJECT
-    inline char *rawBlob()                            { return m_rawBlob; }
-    inline const char *rawBlob() const                { return m_rawBlob; }
-    inline const char *rawTarget() const              { return m_rawTarget; }
-    inline const String &rawSeedHash() const          { return m_rawSeedHash; }
+    inline char *rawBlob()                              { return m_rawBlob; }
+    inline const char *rawBlob() const                  { return m_rawBlob; }
+    inline const char *rawTarget() const                { return m_rawTarget; }
+    inline const String &rawSeedHash() const            { return m_rawSeedHash; }
 #   endif
 
-    static inline uint64_t toDiff(uint64_t target) { return target ? (0xFFFFFFFFFFFFFFFFULL / target) : 0; }
+    static inline uint64_t toDiff(uint64_t target)      { return target ? (0xFFFFFFFFFFFFFFFFULL / target) : 0; }
 
-    inline bool operator!=(const Job &other) const { return !isEqual(other); }
-    inline bool operator==(const Job &other) const { return isEqual(other); }
-    inline Job &operator=(const Job &other)        { copy(other); return *this; }
-    inline Job &operator=(Job &&other) noexcept    { move(std::move(other)); return *this; }
+    inline bool operator!=(const Job &other) const      { return !isEqual(other); }
+    inline bool operator==(const Job &other) const      { return isEqual(other); }
+    inline Job &operator=(const Job &other)             { copy(other); return *this; }
+    inline Job &operator=(Job &&other) noexcept         { move(std::move(other)); return *this; }
 
 private:
     void copy(const Job &other);

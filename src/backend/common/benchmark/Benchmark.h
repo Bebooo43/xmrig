@@ -21,13 +21,12 @@
 
 
 #include "base/tools/Object.h"
-#include "base/crypto/Algorithm.h"
 
 
 namespace xmrig {
 
 
-class IWorker;
+class IBackend;
 
 
 class Benchmark
@@ -35,23 +34,17 @@ class Benchmark
 public:
     XMRIG_DISABLE_COPY_MOVE_DEFAULT(Benchmark)
 
-    Benchmark(uint32_t end, const Algorithm &algo, size_t workers) : m_algo(algo), m_workers(workers), m_end(end) {}
+    Benchmark(size_t workers, const IBackend *backend);
     ~Benchmark() = default;
 
     bool finish(uint64_t totalHashCount);
     void printProgress() const;
     void start();
-    void tick(IWorker *worker);
 
 private:
-    bool m_reset                = false;
-    const Algorithm m_algo      = Algorithm::RX_0;
-    const size_t m_workers      = 0;
-    const uint64_t m_end        = 0;
-    uint32_t m_done             = 0;
+    const IBackend *m_backend;
+    const size_t m_workers;
     uint64_t m_current          = 0;
-    uint64_t m_data             = 0;
-    uint64_t m_doneTime         = 0;
     uint64_t m_startTime        = 0;
 };
 
