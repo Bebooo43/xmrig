@@ -1,3 +1,54 @@
+# v6.9.0
+- [#2104](https://github.com/xmrig/xmrig/pull/2104) Added [pause-on-active](https://xmrig.com/docs/miner/config/misc#pause-on-active) config option and `--pause-on-active=N` command line option.
+- [#2112](https://github.com/xmrig/xmrig/pull/2112) Added support for [Tari merge mining](https://github.com/tari-project/tari/blob/development/README.md#tari-merge-mining).
+- [#2117](https://github.com/xmrig/xmrig/pull/2117) Fixed crash when GPU mining `cn-heavy` on Zen3 system.
+
+# v6.8.2
+- [#2080](https://github.com/xmrig/xmrig/pull/2080) Fixed compile error in Termux.
+- [#2089](https://github.com/xmrig/xmrig/pull/2089) Optimized CryptoNight-Heavy for Zen3, 7-8% speedup.
+
+# v6.8.1
+- [#2064](https://github.com/xmrig/xmrig/pull/2064) Added documentation for config.json CPU options.
+- [#2066](https://github.com/xmrig/xmrig/issues/2066) Fixed AMD GPUs health data readings on Linux.
+- [#2067](https://github.com/xmrig/xmrig/pull/2067) Fixed compilation error when RandomX and Argon2 are disabled.
+- [#2076](https://github.com/xmrig/xmrig/pull/2076) Added support for flexible huge page sizes on Linux.
+- [#2077](https://github.com/xmrig/xmrig/pull/2077) Fixed `illegal instruction` crash on ARM.
+
+# v6.8.0
+- [#2052](https://github.com/xmrig/xmrig/pull/2052) Added DMI/SMBIOS reader.
+  - Added information about memory modules on the miner startup and for online benchmark.
+  - Added new HTTP API endpoint: `GET /2/dmi`.
+  - Added new command line option `--no-dmi` or config option `"dmi"`.
+  - Added new CMake option `-DWITH_DMI=OFF`.
+- [#2057](https://github.com/xmrig/xmrig/pull/2057) Improved MSR subsystem code quality.
+- [#2058](https://github.com/xmrig/xmrig/pull/2058) RandomX JIT x86: removed unnecessary instructions.
+
+# v6.7.2
+- [#2039](https://github.com/xmrig/xmrig/pull/2039) Fixed solo mining.
+
+# v6.7.1
+- [#1995](https://github.com/xmrig/xmrig/issues/1995) Fixed log initialization.
+- [#1998](https://github.com/xmrig/xmrig/pull/1998) Added hashrate in the benchmark finished message.
+- [#2009](https://github.com/xmrig/xmrig/pull/2009) AstroBWT OpenCL fixes.
+- [#2028](https://github.com/xmrig/xmrig/pull/2028) RandomX x86 JIT: removed redundant `CFROUND`.
+
+# v6.7.0
+- **[#1991](https://github.com/xmrig/xmrig/issues/1991) Added Apple M1 processor support.**
+- **[#1986](https://github.com/xmrig/xmrig/pull/1986) Up to 20-30% faster RandomX dataset initialization with AVX2 on some CPUs.**
+- [#1964](https://github.com/xmrig/xmrig/pull/1964) Cleanup and refactoring.
+- [#1966](https://github.com/xmrig/xmrig/pull/1966) Removed libcpuid support.
+- [#1968](https://github.com/xmrig/xmrig/pull/1968) Added virtual machine detection.
+- [#1969](https://github.com/xmrig/xmrig/pull/1969) [#1970](https://github.com/xmrig/xmrig/pull/1970) Fixed errors found by static analysis.
+- [#1977](https://github.com/xmrig/xmrig/pull/1977) Fixed: secure JIT and huge pages are incompatible on Windows.
+- [#1979](https://github.com/xmrig/xmrig/pull/1979) Term `x64` replaced to `64-bit`.
+- [#1980](https://github.com/xmrig/xmrig/pull/1980) Fixed build on gcc 11.
+- [#1989](https://github.com/xmrig/xmrig/pull/1989) Fixed broken Dero solo mining.
+
+# v6.6.2
+- [#1958](https://github.com/xmrig/xmrig/pull/1958) Added example mining scripts to help new miners.
+- [#1959](https://github.com/xmrig/xmrig/pull/1959) Optimized JIT compiler.
+- [#1960](https://github.com/xmrig/xmrig/pull/1960) Fixed RandomX init when switching to other algo and back.
+
 # v6.6.1
 - Fixed, benchmark validation on NUMA hardware produced incorrect results in some conditions.
 
